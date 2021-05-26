@@ -66,16 +66,12 @@ class Splitter:
     def match_columns(self):
         train_cols = self.split_dfs['X_train'].columns.values.tolist()
         test_cols = self.split_dfs['X_test'].columns.values.tolist()
-        print(0)
         self.add_match_cols(train_cols, test_cols, 'X_test')
-        print(1)
         self.add_match_cols(test_cols, train_cols, 'X_train')
-        print(2)
         
     def add_match_cols(self, source_cols, target_cols, target_df_key):
         for col in source_cols:
             if col not in target_cols:
-                print(col)
                 self.split_dfs[target_df_key][col] = 0
         
 

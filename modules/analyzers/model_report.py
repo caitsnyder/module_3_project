@@ -45,13 +45,13 @@ class ModelReport:
         
     def get_svm_report(self):
         SVC_model = SVC()
-        SVC_model.fit(self.splits['X_train'], self.splits['y_train'])
+        SVC_model.fit(self.splits['X_train'], self.splits['y_train'].values.ravel())
         SVC_prediction = SVC_model.predict(self.splits['X_test'])
         self.accuracy_report['svm'] = accuracy_score(SVC_prediction, self.splits['y_test'])
     
     def get_knn_report(self):
         KNN_model = KNeighborsClassifier(n_neighbors=5)
-        KNN_model.fit(self.splits['X_train'], self.splits['y_train'])
+        KNN_model.fit(self.splits['X_train'], self.splits['y_train'].values.ravel())
         KNN_prediction = KNN_model.predict(self.splits['X_test'])
 #         print(confusion_matrix(SVC_prediction, dfs.splits['y_test']))
 #         print(classification_report(KNN_prediction, dfs.splits['y_test']))

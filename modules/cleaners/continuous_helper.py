@@ -1,15 +1,20 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 class ContinuousHelper():
     def __init__(self):
         pass
     
-    def get_cleaned_df(self, df, features):
+    def get_cleaned_df(self, df, features, outcome):
         self.impute_zeros(df, ['construction_year', 'population'])
         list(map(lambda col: self.handle_zeros_pre_log(df, col), features))
         list(map(lambda col: self.handle_negatives_pre_log(df, col), features))
-        
+        # self.show_multi_colinearity(df, features)
+        # self.show_outliers(df, features)
+        self.show_basic_correlations(df, features, outcome)
+    
     def impute_zeros(self, df, cols):
         for col in cols:
             df[col] = df.apply(
@@ -41,3 +46,33 @@ class ContinuousHelper():
             df[col] = df.apply(
                 lambda row: row[col] + col_min,
                 axis=1)
+
+    def show_multi_colinearity(self, df, features):
+        self.generate_heat_map(df, features)
+
+    def generate_heat_map(self, df, features):
+        plt.figure(figsize=(7, 6))
+        sns.heatmap(df[features].corr(), center=0)
+        plt.show()
+
+    def remove_col(self, df, col, features):
+        df.drop([col], axis=1, inplace=True)
+        features.remove(col)
+
+    def show_outliers(self, df, cols):
+        fig, axes = plt.subplots(2, 3, figsize=(9, 6))
+        axe = axes.ravel()
+
+        for i, xcol in enumerate(cols):
+            sns.boxplot(x=df[xcol], ax=axe[i])
+        plt.show()
+
+    def show_basic_correlations(self, df, cols, outcome):
+        preds = [i for i in cols if i != outcome]
+        fig, axes = plt.subplots(2, 3, figsize=(9, 6))
+        axe = axes.ravel()
+
+        for i, xcol in enumerate(preds):
+            df.plot(kind='scatter', x=xcol, y=outcome, alpha=0.4, color='b', ax=axe[i])
+        
+        plt.show()

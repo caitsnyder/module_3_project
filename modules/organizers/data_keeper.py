@@ -44,9 +44,9 @@ class DataKeeper:
         return df
         
     def preprocess(self, raw_df):
-        self.cleaned_df = self.cleaner.get_cleaned_df(raw_df)
+        self.cleaned_df = self.cleaner.get_cleaned_df(raw_df, self.outcome)
         self.splits = self.splitter.get_splits(self.cleaned_df, self.outcome)
-        
+
     def get_report(self):
         self.report.get_reports(self.splits)
     

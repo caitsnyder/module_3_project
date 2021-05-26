@@ -9,10 +9,13 @@ class Cleaner():
         self.cont_helper = ContinuousHelper()
         self.cat_helper = CategoricalHelper()
         
-    def get_cleaned_df(self, df):
+    def get_cleaned_df(self, df, outcome):
         self.general_cleaning(df)
+        self.override_numeric_coding(df)
+        self.cont_helper.get_cleaned_df(df, self.get_cont_features(df), outcome)
         self.cat_helper.get_cleaned_df(df, self.get_cat_features(df))
-        self.cont_helper.get_cleaned_df(df, self.get_cont_features(df))
+        
+        df.to_excel('data/cleaned.xlsx')
         return df
     
     def general_cleaning(self, df):
@@ -28,11 +31,12 @@ class Cleaner():
         for col in cols:
             if col in df.columns:
                 df.drop([col], axis=1, inplace=True)
-                
+
+    def override_numeric_coding(self, df):
+        cols = ['region_code', 'district_code', 'num_private']
+        list(map(lambda col: self.change_type(df, col, str), cols))
+
     def get_cat_features(self, df):
-        self.change_type(df, 'region_code', str)
-        self.change_type(df, 'district_code', str)
-        self.change_type(df, 'num_private', str)
         return df.select_dtypes(include=['object']).columns
     
     def change_type(self, df, col, new_type):
