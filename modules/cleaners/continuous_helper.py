@@ -2,62 +2,72 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+pd.options.mode.chained_assignment = None
 
 class ContinuousHelper():
     def __init__(self):
-        pass
+        self.imputer = SimpleImputer(missing_values = np.nan, 
+                        strategy ='median')
+        self.scaler = StandardScaler()
     
-    def get_cleaned_df(self, df, features, outcome):
-        self.impute_zeros(df, ['construction_year', 'population'])
-        list(map(lambda col: self.handle_zeros_pre_log(df, col), features))
-        list(map(lambda col: self.handle_negatives_pre_log(df, col), features))
-        # self.show_multi_colinearity(df, features)
-        # self.show_outliers(df, features)
-        self.show_basic_correlations(df, features, outcome)
+    def get_cleaned_df(self, df, outcome):
+        cont_transformer = Pipeline(steps=[
+            ('imputer', SimpleImputer(strategy='median')),
+            ('scaler', StandardScaler())])
+
+
+
+        imputer = self.imputer.fit(df)
+        arr_imputed = imputer.transform(df)
+        arr_scaled =  self.scaler.fit_transform(arr_imputed)
+        df = pd.DataFrame(imputer.transform(arr_scaled), columns=df.columns, index=df.index)
+        print(arr)
+        # list(map(lambda col: self.clean_pre_log(df, col), df.columns))
+        # self.show_visualizations(df, features, outcome)
+        return df
     
-    def impute_zeros(self, df, cols):
-        for col in cols:
-            df[col] = df.apply(
-                lambda row: np.nan if row[col] == 0 else row[col], axis=1)
-            self.impute_median(df, col)
+    # def clean_zeros(self, df, cols):
+    #     for col in cols:
+    #         df[col] = df.apply(
+    #             lambda row: np.nan if row[col] == 0 else row[col], axis=1)
     
-    def impute_median(self, df, col):
-        df_one_col = df[[col]]
-        df_one_col.fillna(df_one_col.median(), inplace=True)        
-        df[col] = df_one_col[col]
+    # # def impute_median(self, df):
+    #     imputer = self.imputer.fit(df)
+    #     return pd.DataFrame(imputer.transform(df), columns=df.columns, index=df.index)
             
-    def handle_zeros_pre_log(self, df, col):
-        if df[col].min() != 0:
+    def clean_pre_log(self, df, col):
+        if df[col].min() > 0:
             return
-        elif (df[col].min() == 0 and df[col].max() == 0):
+
+        elif (df[col].sum() == 0):
             df.drop([col],axis=1, inplace=True)
-        else:
+
+        elif df[col].min() == 0:
             col_non_zero_min = df.loc[df[col] > 0, col].min()
             offset = col_non_zero_min/2
             df[col] = df.apply(
                 lambda row: row[col] + offset,
                 axis=1)
-            
-    def handle_negatives_pre_log(self, df, col):
-        if df[col].min() >= 0:
-            return
-        else:
+
+        elif df[col].min() < 0:
             col_min = abs(df[col].min()) + 1
             df[col] = df.apply(
                 lambda row: row[col] + col_min,
                 axis=1)
 
-    def show_multi_colinearity(self, df, features):
+    def show_visualizations(self, df, features, outcome):
         self.generate_heat_map(df, features)
+        self.show_outliers(df, features)
+        self.show_basic_correlations(df, features, outcome)
 
     def generate_heat_map(self, df, features):
         plt.figure(figsize=(7, 6))
         sns.heatmap(df[features].corr(), center=0)
         plt.show()
 
-    def remove_col(self, df, col, features):
-        df.drop([col], axis=1, inplace=True)
-        features.remove(col)
 
     def show_outliers(self, df, cols):
         fig, axes = plt.subplots(2, 3, figsize=(9, 6))

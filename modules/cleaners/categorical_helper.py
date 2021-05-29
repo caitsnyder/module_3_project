@@ -7,10 +7,11 @@ class CategoricalHelper():
     def __init__(self):
         self.fuzzy_matcher = FuzzyMatcher()
 
-    def get_cleaned_df(self, df, features):
+    def get_cleaned_df(self, df):
         df.fillna('unknown', inplace=True) 
         self.apply_fuzzy_matching(df)
         self.replace_unknowns(df)
+        return df
 
     def apply_fuzzy_matching(self, df):
         # doubles
