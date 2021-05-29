@@ -1,4 +1,4 @@
-class SplitKeeper:
+class SplitsManager:
     def __init__(self):
         self.X_train = None
         self.X_test = None, 

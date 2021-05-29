@@ -1,4 +1,4 @@
-from modules.organizers.data_manager import DataManager
+from modules.managers.data_manager import DataManager
 def main():
     dfs = DataManager(run_type_dev=True)
     dfs.get_report()

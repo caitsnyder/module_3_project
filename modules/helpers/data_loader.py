@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from modules.organizers.path_constants import paths
+from modules.constants.path_constants import paths
 
 class DataLoader:
     def __init__(self):

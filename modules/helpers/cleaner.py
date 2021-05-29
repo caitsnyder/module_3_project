@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 
-from modules.cleaners.fuzzy_matcher import FuzzyMatcher
+from modules.helpers.fuzzy_matcher import FuzzyMatcher
 
 class Cleaner():
     def __init__(self):

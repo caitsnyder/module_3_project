@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
-from modules.cleaners.cleaner import Cleaner
+from modules.helpers.cleaner import Cleaner
 
 class PreProcessor():
     def __init__(self):
