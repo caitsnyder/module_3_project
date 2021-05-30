@@ -43,10 +43,8 @@ class VizHelper:
 
     def show_confusion_matrix(self, clf, X_test, y_test, outcome, title):
         labels = y_test[outcome].unique()
-        print(labels)
         disp = plot_confusion_matrix(clf, X_test, y_test,
                                         display_labels=labels,
                                         cmap=plt.cm.Blues)
         disp.ax_.set_title(title)
-        print(disp.confusion_matrix)
         plt.show()

@@ -47,7 +47,8 @@ class ReportManager:
             print(f"{title}: {self.results[key]:.2%}")
 
     def evaluate_predictions(self, key):
-        title = key.replace("_", " ").title()
+        clf_name = key.replace("_", " ").upper()
+        title = f"{clf_name} ({self.results[key]:.2%})"
         VizHelper().show_confusion_matrix(self.clfs[key], self.splits.X_test, self.splits.y_test, self.outcome, title)
 
 
