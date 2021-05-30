@@ -1,8 +1,11 @@
+from sklearn.metrics._plot.confusion_matrix import plot_confusion_matrix
+from modules.managers.splits_manager import SplitsManager
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import multilabel_confusion_matrix
 
 class VizHelper:
     def __init__(self):
@@ -38,17 +41,12 @@ class VizHelper:
         
         plt.show()
 
-    def show_confusion_matrix(self, y_test, y_pred, outcome, key):
+    def show_confusion_matrix(self, clf, X_test, y_test, outcome, title):
         labels = y_test[outcome].unique()
-        cm = confusion_matrix(y_test, y_pred, labels)
-        print(cm)
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        cax = ax.matshow(cm)
-        plt.title(f"Confusion matrix of the {key} classifier")
-        fig.colorbar(cax)
-        ax.set_xticklabels([''] + labels)
-        ax.set_yticklabels([''] + labels)
-        plt.xlabel('Predicted')
-        plt.ylabel('True')
+        print(labels)
+        disp = plot_confusion_matrix(clf, X_test, y_test,
+                                        display_labels=labels,
+                                        cmap=plt.cm.Blues)
+        disp.ax_.set_title(title)
+        print(disp.confusion_matrix)
         plt.show()

@@ -2,6 +2,7 @@ from modules.managers.splits_manager import SplitsManager
 from modules.helpers.viz_helper import VizHelper
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
+from sklearn.metrics import plot_confusion_matrix
 
 from modules.constants.param_grid_constants import param_grids
 from modules.constants.classifier_constants import classifiers
@@ -11,7 +12,7 @@ class ReportManager:
         self.splits = None
         self.outcome = outcome
         self.results = {}
-        self.models = {}
+        self.clfs = {}
         
     def run_reports(self, preprocessor, splits: SplitsManager):
         self.splits = splits
@@ -37,7 +38,7 @@ class ReportManager:
                         )
         gs_results  = gs.fit(self.splits.X_train, self.splits.y_train.values.ravel())
         self.results[key] = gs_results.best_score_
-        self.models[key] = gs_results.best_estimator_
+        self.clfs[key] = gs_results.best_estimator_
 
     def display_results(self):
         print('---------\nAccuracy reports\n---------')
@@ -46,9 +47,8 @@ class ReportManager:
             print(f"{title}: {self.results[key]:.2%}")
 
     def evaluate_predictions(self, key):
-        print(key)
-        y_pred = self.models[key].predict(self.splits.X_test)
-        VizHelper().show_confusion_matrix(self.splits.y_test, y_pred, self.outcome, key)
+        title = key.replace("_", " ").title()
+        VizHelper().show_confusion_matrix(self.clfs[key], self.splits.X_test, self.splits.y_test, self.outcome, title)
 
 
     
