@@ -9,7 +9,7 @@ class FuzzyMatcher:
     def __init__(self):
         self.cols = []
     
-    def clean_orgs(self, df, cols):
+    def set_fuzzy_matches(self, df, cols):
         self.cols = cols
         self.clean_col_text(df)
         
@@ -44,15 +44,15 @@ class FuzzyMatcher:
         return value
     
     def get_matches(self, df):
-        values = self.get_orgs(df)
+        values = self.get_values(df)
         match_df = self.get_match_df(values)
         scores_df = self.get_scores(match_df)
         return scores_df
 
-    def get_orgs(self, df):
+    def get_values(self, df):
         list_of_lists = [df[col] for col in self.cols]
-        orgs = [j for sub in list_of_lists for j in sub]
-        return np.unique([str(i).lower() for i in orgs if str(i) != 'nan']).tolist()
+        values = [j for sub in list_of_lists for j in sub]
+        return np.unique([str(i).lower() for i in values if str(i) != 'nan']).tolist()
     
     def get_match_df(self, values):
         score_sort = [(x,) + i

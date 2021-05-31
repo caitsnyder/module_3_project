@@ -7,5 +7,5 @@ classifiers = {
     'decision_tree': DecisionTreeClassifier(),
     'random_forest': RandomForestClassifier(),
     'svm': SVC(),
-    'knn': KNeighborsClassifier()
+    'knn': KNeighborsClassifier(),
 }
