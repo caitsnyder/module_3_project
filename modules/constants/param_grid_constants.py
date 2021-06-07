@@ -23,5 +23,13 @@ param_grids = {
         'clf__n_neighbors': [3, 5, 7, 11, 19],
         'clf__weights': ['uniform', 'distance'],
         'clf__metric': ['euclidean', 'manhattan']
+    },
+    'xgboost': {
+        'clf__max_depth':6,
+        'clf__min_child_weight': 1,
+        'clf__eta':.3,
+        'clf__subsample': 1,
+        'clf__colsample_bytree': 1,
+        'clf__objective':'reg:linear',
     }
 }
