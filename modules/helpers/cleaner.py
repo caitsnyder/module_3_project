@@ -13,8 +13,11 @@ class Cleaner():
         df.drop(['num_private', 'amount_tsh'], axis=1, inplace=True)
         self.convert_to_string(df)
         self.replace_nan(df)
-        FuzzyMatcher().set_fuzzy_matches(df, ['funder', 'installer'])
+        self.bin_date(df)
+        self.bin_categorical_features(df)
+        # FuzzyMatcher().set_fuzzy_matches(df, ['funder', 'installer'])
         return df
+
     def convert_to_string(self, df):
         cols = [
             'region_code', 
@@ -41,3 +44,15 @@ class Cleaner():
     def replace_zeros(self, df, col):
         df[col] = df.apply(lambda row: np.nan 
             if row[col] == 0 else row[col], axis=1)
+
+    def bin_date(self, df):
+        df['year'] = [x.split("-")[0] for x in df['date_recorded']]
+        df['month'] = [x.split("-")[1] for x in df['date_recorded']]
+        df.drop(['date_recorded'], axis=1, inplace=True)
+
+    def bin_categorical_features(self, df):
+       cols = df.select_dtypes(include=['object']).columns.values.tolist()
+       for col in cols:
+            top_10 = df[col].value_counts().index[:10].tolist()
+            if len(top_10) == 10:
+                df[col] = [x if x in top_10 else "Other" for x in df[col]]
