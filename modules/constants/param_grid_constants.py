@@ -15,8 +15,8 @@ param_grids = {
         'clf__min_samples_leaf': [2, 3, 6]
     },
     'svm': {
-        'clf__C': [0.1, 1, 10, 100, 1000], 
-        'clf__gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+        'clf__C': [0.1, 1, 10], 
+        'clf__gamma': [1, 0.1, 0.01],
         'clf__kernel': ['rbf']
     },
     'knn': {
