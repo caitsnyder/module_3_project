@@ -11,23 +11,12 @@ from modules.constants.param_grid_constants import param_grids
 from modules.constants.classifier_constants import classifiers
 
 class ReportManager:
-    def __init__(self, bucket, prefix, outcome):
+    def __init__(self, outcome):
         self.splits = None
-        self.bucket = bucket
-        self.prefix = prefix
-        self.outcome = outcome
-        self.s3_input_train, self.s3_input_validation = None, None
         self.results = []
+        self.outcome = outcome
 
-    # def get_data(self):
-    #     self.s3_input_train = self.load_s3_file("train")
-    #     self.s3_input_validation = self.load_s3_file("test")
 
-    # def get_csv(self, file):
-    #     return TrainingInput(
-    #         s3_data=f"s3://{self.bucket}/{self.prefix}/{file}", content_type="csv"
-    #     )
-        
     def run_reports(self, preprocessor, splits: SplitsManager):
         self.splits = splits
         list(map(lambda key: self.execute_pipeline(preprocessor, key), classifiers.keys()))

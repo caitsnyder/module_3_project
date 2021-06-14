@@ -25,11 +25,11 @@ param_grids = {
         'clf__metric': ['euclidean', 'manhattan']
     },
     'xgboost': {
-        'clf__max_depth':6,
-        'clf__min_child_weight': 1,
-        'clf__eta':.3,
-        'clf__subsample': 1,
-        'clf__colsample_bytree': 1,
-        'clf__objective':'reg:linear',
+        'clf__max_depth': [6],
+        'clf__min_child_weight': [1],
+        'clf__eta': [.3],
+        'clf__subsample': [1],
+        'clf__colsample_bytree': [1],
+        'clf__objective': ['reg:linear'],
     }
 }

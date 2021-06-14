@@ -15,7 +15,6 @@ class Cleaner():
         self.replace_nan(df)
         self.bin_date(df)
         self.bin_categorical_features(df)
-        # FuzzyMatcher().set_fuzzy_matches(df, ['funder', 'installer'])
         return df
 
     def convert_to_string(self, df):
