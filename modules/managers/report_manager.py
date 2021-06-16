@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
 from sklearn.metrics import accuracy_score
 from imblearn.pipeline import Pipeline as imbPipeline
 
@@ -15,7 +15,6 @@ class ReportManager:
         self.splits = None
         self.results = []
         self.outcome = outcome
-
 
     def run_reports(self, preprocessor, splits: SplitsManager):
         self.splits = splits
@@ -33,7 +32,7 @@ class ReportManager:
             ('sampler', preprocessor['sampler']),
             ("clf", classifiers[key])
             ])
-        gs = RandomizedSearchCV(pipe,
+        gs = GridSearchCV(pipe,
                             param_grid,
                             cv=3,
                             scoring="accuracy",

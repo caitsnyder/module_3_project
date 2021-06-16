@@ -7,13 +7,23 @@ import seaborn as sns
 class VizHelper:
     def __init__(self):
         pass
-
+   
     def show_visualizations(self, df, outcome):
         cont_features = df.select_dtypes(exclude=['object']).columns
+        self.check_outcome_distribution(df, outcome)
         self.generate_heat_map(df, cont_features)
         self.show_outliers(df, cont_features)
         self.show_basic_correlations(df, cont_features, outcome)
         self.show_outcome_dist(df, outcome)
+
+    def check_outcome_distribution(self, df, outcome):
+        labels = df[outcome].value_counts().index
+        cnts = df[outcome].value_counts().values
+        
+        df_temp = pd.DataFrame({'labels':labels, 'counts':cnts})
+        ax = df_temp.plot.bar(x='labels', y='counts', rot=0)
+        ax.set_title("Frequency of outcome values")
+
 
     def generate_heat_map(self, df, features):
         plt.figure(figsize=(7, 6))

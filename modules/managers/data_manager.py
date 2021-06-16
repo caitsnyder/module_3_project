@@ -26,7 +26,7 @@ class DataManager:
     def process_data(self, run_type_dev):
         raw_df = DataLoader().load(self.outcome, run_type_dev, self.sample_size)
         df = Cleaner().clean_df(raw_df)
-        # VizHelper().show_visualizations(df, self.outcome)
+        VizHelper().show_visualizations(df, self.outcome)
         self.split_data(df, self.outcome)
    
     def split_data(self, df, outcome):
