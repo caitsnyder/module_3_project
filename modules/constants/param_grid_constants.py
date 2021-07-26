@@ -14,11 +14,6 @@ param_grids = {
         'clf__min_samples_split': [2, 5, 10],
         'clf__min_samples_leaf': [2, 3, 6]
     },
-    'svm': {
-        'clf__C': [0.1, 1, 10], 
-        'clf__gamma': [1, 0.1, 0.01],
-        'clf__kernel': ['rbf']
-    },
     'knn': {
         'clf__n_neighbors': [3, 5, 7, 11, 19],
         'clf__weights': ['uniform', 'distance'],
@@ -26,10 +21,5 @@ param_grids = {
     },
     'xgboost': {
         'clf__max_depth': [10],
-        # 'clf__min_child_weight': [1],
-        # 'clf__eta': [.3],
-        # 'clf__subsample': [1],
-        # 'clf__colsample_bytree': [1],
-        # 'clf__objective': ['reg:linear'],
     }
 }

@@ -7,7 +7,6 @@ from xgboost import XGBClassifier
 classifiers = {
     'decision_tree': DecisionTreeClassifier(),
     'random_forest': RandomForestClassifier(),
-    # 'svm': SVC(),
     'knn': KNeighborsClassifier(),
     'xgboost': XGBClassifier()
 }
